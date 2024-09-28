@@ -25,25 +25,28 @@ async def read_doctors() -> list[DoctorResponseModel]:
 @router.get("/{doctor_id}")
 async def read_doctor(doctor_id: int) -> DoctorResponseModel:
     doctor = db.get(db.tables["doctor"], id=doctor_id)
-    if doctor:
-        return doctor
-    else:
+    if not doctor:
         raise HTTPException(status_code=404)
+    return doctor
 
 @router.put("/{doctor_id}")
 async def update_doctor(doctor_id: int, updated_doctor: DoctorResponseModelUpdate) -> dict:
     doctor = db.get(db.tables["doctor"], id=doctor_id)
-    if doctor:
-        if db.update(db.tables["doctor"], doctor, **updated_doctor.model_dump(exclude_none=True)):
-            return {"message": "record succesfully updated"}
-    else:
+    if not doctor:
         raise HTTPException(status_code=404)
+
+    if not db.update(db.tables["doctor"], doctor, **updated_doctor.model_dump(exclude_none=True)):
+        raise HTTPException(status_code=500,
+                            detail={"message": f"Something went wrong while updating the doctor with id: {doctor_id}"})
+
+    return {"message": "record succesfully updated"}
+
 
 @router.delete("/{doctor_id}")
 async def delete_doctor(doctor_id: int) -> dict:
     doctor = db.get(db.tables["doctor"], id=doctor_id)
-    if doctor:
-        db.delete(doctor)
-        return {"message": f"removed doctor with id '{doctor_id}' succesfully"}
-    else:
+    if not doctor:
         raise HTTPException(status_code=404)
+
+    db.delete(doctor)
+    return {"message": f"removed doctor with id '{doctor_id}' succesfully"}

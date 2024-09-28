@@ -25,25 +25,30 @@ async def read_patients() -> list[PatientResponseModel]:
 @router.get("/{patient_id}")
 async def read_patient(patient_id: int) -> PatientResponseModel:
     patient = db.get(db.tables["patient"], id=patient_id)
-    if patient:
-        return patient
-    else:
+    if not patient:
         raise HTTPException(status_code=404)
+
+    return patient
+
 
 @router.put("/{patient_id}")
 async def update_patient(patient_id: int, updated_patient: PatientResponseModelUpdate) -> dict:
     patient = db.get(db.tables["patient"], id=patient_id)
-    if patient:
-        if db.update(db.tables["patient"], patient, **updated_patient.model_dump(exclude_none=True)):
-            return {"message": "record succesfully updated"}
-    else:
+    if not patient:
         raise HTTPException(status_code=404)
+
+    if not db.update(db.tables["patient"], patient, **updated_patient.model_dump(exclude_none=True)):
+        raise HTTPException(status_code=500,
+                            detail={"message": f"Something went wrong while updating the patient with id: {patient_id}"})
+
+    return {"message": "record succesfully updated"}
 
 @router.delete("/{patient_id}")
 async def delete_patient(patient_id: int) -> dict:
     patient = db.get(db.tables["patient"], id=patient_id)
-    if patient:
-        db.delete(patient)
-        return {"message": f"removed patient with id '{patient_id}' succesfully"}
-    else:
+    if not patient:
         raise HTTPException(status_code=404)
+
+    db.delete(patient)
+    return {"message": f"removed patient with id '{patient_id}' succesfully"}
+

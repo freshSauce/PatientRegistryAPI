@@ -33,9 +33,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 @router.get("/user/{user_id}")
 async def get_user(user_id: int) -> UserResponseModel:
     user = db.get(User, id=user_id)
-    if user:
-        return user
-    raise HTTPException(status_code=404)
+    if not user:
+        raise HTTPException(status_code=404)
+    return user
 
 @router.post("/register")
 async def register_user(user: UserResponseModelCreate) -> dict:
@@ -44,10 +44,11 @@ async def register_user(user: UserResponseModelCreate) -> dict:
     password = bcrypt.hash(user.password)
     user = User(username=username, email=email, password=password)
     db.add(user)
-    if db.get(User, username=username):
-        return {"message": "user successfully registered"}
-    raise HTTPException(status_code=400,
+    if not db.get(User, username=username):
+        raise HTTPException(status_code=400,
                         detail="Something went wrong while registering, please contact the adminsitrator.")
+
+    return {"message": "user successfully registered"}
 
 @router.post("/login")
 async def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
