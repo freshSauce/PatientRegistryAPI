@@ -38,6 +38,7 @@ async def update_patient(patient_id: int, updated_patient: PatientResponseModelU
             return {"message": "record succesfully updated"}
     else:
         raise HTTPException(status_code=404)
+
 @router.delete("/{patient_id}")
 async def delete_patient(patient_id: int) -> dict:
     patient = db.get(db.tables["patient"], id=patient_id)

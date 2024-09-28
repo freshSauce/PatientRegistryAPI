@@ -2,17 +2,17 @@ from sqlalchemy import Column, Integer, String
 
 from .base import Base, BaseResponseModel
 
-class Patient(Base):
-    __tablename__ = 'patient'
+class Doctor(Base):
+    __tablename__ = 'doctor'
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
     first_name = Column(String(255))
     last_name = Column(String(255))
 
-class PatientResponseModelCreate(BaseResponseModel):
+class DoctorResponseModelCreate(BaseResponseModel):
     first_name: str
     last_name: str
 
-class PatientResponseModel(BaseResponseModel):
+class DoctorResponseModel(BaseResponseModel):
     id: int | None = None
     first_name: str
     last_name: str
@@ -20,6 +20,6 @@ class PatientResponseModel(BaseResponseModel):
     class Config:
         orm_mode = True
 
-class PatientResponseModelUpdate(BaseResponseModel):
+class DoctorResponseModelUpdate(BaseResponseModel):
     first_name: str | None = None
     last_name: str | None = None

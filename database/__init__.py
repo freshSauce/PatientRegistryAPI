@@ -1,5 +1,5 @@
 from .db import create_database, create_session
-from models import Patient
+from models import Patient, Doctor, User
 import logging
 
 logging.basicConfig(
@@ -18,7 +18,9 @@ class DatabaseManager:
         self.session = None
         self.create_session()
         self.tables = {
-            "patient": Patient
+            "patient": Patient,
+            "doctor": Doctor,
+            "user": User
         }
 
     def create_session(self):
