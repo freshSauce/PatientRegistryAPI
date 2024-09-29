@@ -25,7 +25,7 @@ class PatientResponseModel(BaseResponseModel):
     medical_records: list[MedicalHistoryModel] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PatientResponseModelUpdate(BaseResponseModel):
     first_name: str | None = None
