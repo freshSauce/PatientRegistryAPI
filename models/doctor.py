@@ -18,7 +18,7 @@ class DoctorResponseModel(BaseResponseModel):
     last_name: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class DoctorResponseModelUpdate(BaseResponseModel):
     first_name: str | None = None

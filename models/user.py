@@ -23,7 +23,7 @@ class UserResponseModel(BaseResponseModel):
     email: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UserResponseLogin(BaseResponseModel):
     username: str

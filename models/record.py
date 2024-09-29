@@ -26,7 +26,7 @@ class MedicalHistoryModel(BaseResponseModel):
     description: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class MedicalHistoryModelUpdate(BaseResponseModel):
     date: int | None = None
