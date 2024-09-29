@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from fastapi import APIRouter, HTTPException
 from models import PatientResponseModel, PatientResponseModelCreate, PatientResponseModelUpdate
+from models import MedicalHistoryModel, CreateMedicalHistoryModel, UpdateMedicalHistoryModel
 from database import DatabaseManager
 
 router = APIRouter(
@@ -52,3 +55,24 @@ async def delete_patient(patient_id: int) -> dict:
     db.delete(patient)
     return {"message": f"removed patient with id '{patient_id}' succesfully"}
 
+
+
+@router.get("/{patient_id}/records")
+async def get_patient_records(patient_id: int) -> list[MedicalHistoryModel]:
+    patient = db.get(db.tables["patient"], id=patient_id)
+    if not patient:
+        raise HTTPException(status_code=404)
+
+    medical_history = patient.medical_records
+    return medical_history
+
+@router.post("/{patient_id}/records")
+async def create_record(record: CreateMedicalHistoryModel) -> MedicalHistoryModel:
+    patient = db.get(db.tables["patient"], id=record.patient_id)
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+
+    date = int(datetime.now().timestamp())
+    record = db.tables["record"](**record.model_dump(), date=date)
+    db.add(record)
+    return record
