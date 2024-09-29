@@ -12,10 +12,9 @@ class MedicalHistory(Base):
     record_type = Column(String(50))
     description = Column(String(255))
 
-    # Relación inversa con el paciente
     patient = relationship('Patient', back_populates='medical_records')
 
-class CreateMedicalHistoryModel(BaseResponseModel):
+class MedicalHistoryModelCreate(BaseResponseModel):
     patient_id: int
     record_type: str
     description: str
@@ -30,7 +29,7 @@ class MedicalHistoryModel(BaseResponseModel):
     class Config:
         orm_mode = True
 
-class UpdateMedicalHistoryModel(BaseResponseModel):
+class MedicalHistoryModelUpdate(BaseResponseModel):
     date: int | None = None
     record_type: str | None = None
     description: str | None = None

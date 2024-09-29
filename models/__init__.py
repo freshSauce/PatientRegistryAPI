@@ -1,7 +1,7 @@
 from .patient import Patient, PatientResponseModel, PatientResponseModelCreate, PatientResponseModelUpdate
 from .doctor import Doctor, DoctorResponseModel, DoctorResponseModelCreate, DoctorResponseModelUpdate
 from .user import User, UserResponseModel, UserResponseModelCreate, UserResponseModelUpdate, UserResponseLogin, Token
-from .record import MedicalHistory, MedicalHistoryModel, CreateMedicalHistoryModel, UpdateMedicalHistoryModel
+from .record import MedicalHistory, MedicalHistoryModel, MedicalHistoryModelCreate, MedicalHistoryModelUpdate
 from .base import Base
 
 __all__ = [
@@ -23,8 +23,8 @@ __all__ = [
 
     "MedicalHistory",
     "MedicalHistoryModel",
-    "CreateMedicalHistoryModel",
-    "UpdateMedicalHistoryModel",
+    "MedicalHistoryModelCreate",
+    "MedicalHistoryModelUpdate",
 
     "Token",
 
