@@ -15,7 +15,6 @@ class MedicalHistory(Base):
     patient = relationship('Patient', back_populates='medical_records')
 
 class MedicalHistoryModelCreate(BaseResponseModel):
-    patient_id: int
     record_type: str
     description: str
 
